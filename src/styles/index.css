@@ -1,0 +1,174 @@
+/*
+ * Design tokens XPanel (docs/konsep-ui-ux.md §2).
+ * Komposisi warna: BIRU TUA (brand/sidebar) · PUTIH (permukaan terang) ·
+ * SILVER (garis, teks sekunder). Mode gelap = navy pekat + teks silver.
+ * Semua komponen WAJIB memakai token semantik (bg/surface/line/ink/brand/accent)
+ * — tidak pernah hex langsung — agar dark/light konsisten otomatis.
+ */
+
+@import "tailwindcss";
+
+/* Dark mode berbasis kelas .dark di <html> (di-set ThemeProvider + bootstrap index.html) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* permukaan */
+  --c-bg: #f2f5f9;        /* latar aplikasi — silver keputihan */
+  --c-surface: #ffffff;   /* kartu/panel — putih */
+  --c-surface2: #e9eef5;  /* fill lembut: hover, thead, input */
+  --c-line: #d7dde8;      /* border — silver */
+
+  /* teks */
+  --c-ink: #0b1f3b;       /* navy — teks utama */
+  --c-ink2: #44516d;      /* sekunder */
+  --c-ink3: #8691a9;      /* muted/placeholder */
+
+  /* aksi */
+  --c-brand: #14305a;     /* biru tua — tombol utama */
+  --c-brand2: #1c3f74;    /* hover brand */
+  --c-accent: #3b6fd4;    /* biru interaktif: link, fokus, chart (tervalidasi light) */
+  --c-accent-soft: #e4ecfa;
+
+  /* status — selalu tampil bersama label/ikon, tidak pernah warna saja */
+  --c-ok: #1e7e46;        --c-ok-soft: #e1f2e8;
+  --c-warn: #a9650f;      --c-warn-soft: #faeedb;
+  --c-danger: #bb3a2c;    --c-danger-soft: #fae6e3;
+
+  --c-chart: #3b6fd4;     /* seri tunggal chart, mode terang */
+
+  /* sidebar: SELALU biru tua di kedua mode — identitas panel */
+  --c-side: #0b1f3b;
+  --c-side2: #142c52;     /* hover/active fill */
+  --c-side-line: #1e3a63;
+  --c-side-ink: #c9d3e4;  /* silver */
+  --c-side-ink2: #7e8eab;
+}
+
+.dark {
+  --c-bg: #0a1120;
+  --c-surface: #101b30;
+  --c-surface2: #172440;
+  --c-line: #243355;
+
+  --c-ink: #e7ebf3;
+  --c-ink2: #aab5cb;
+  --c-ink3: #74809b;
+
+  --c-brand: #2f5fbe;
+  --c-brand2: #3b6fd4;
+  --c-accent: #5b8ae0;    /* tervalidasi terhadap surface gelap #0b1526 */
+  --c-accent-soft: #19294a;
+
+  --c-ok: #46b279;        --c-ok-soft: #10301f;
+  --c-warn: #d99a3d;      --c-warn-soft: #33250e;
+  --c-danger: #e06552;    --c-danger-soft: #3a1713;
+
+  --c-chart: #5b8ae0;
+
+  --c-side: #0a1526;
+  --c-side2: #122039;
+  --c-side-line: #1b2c4c;
+  --c-side-ink: #c9d3e4;
+  --c-side-ink2: #74839f;
+}
+
+@theme inline {
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-surface2: var(--c-surface2);
+  --color-line: var(--c-line);
+  --color-ink: var(--c-ink);
+  --color-ink2: var(--c-ink2);
+  --color-ink3: var(--c-ink3);
+  --color-brand: var(--c-brand);
+  --color-brand2: var(--c-brand2);
+  --color-accent: var(--c-accent);
+  --color-accent-soft: var(--c-accent-soft);
+  --color-ok: var(--c-ok);
+  --color-ok-soft: var(--c-ok-soft);
+  --color-warn: var(--c-warn);
+  --color-warn-soft: var(--c-warn-soft);
+  --color-danger: var(--c-danger);
+  --color-danger-soft: var(--c-danger-soft);
+  --color-chart: var(--c-chart);
+  --color-side: var(--c-side);
+  --color-side2: var(--c-side2);
+  --color-side-line: var(--c-side-line);
+  --color-side-ink: var(--c-side-ink);
+  --color-side-ink2: var(--c-side-ink2);
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background-color: var(--c-bg);
+    color: var(--c-ink);
+    font-family: var(--font-sans);
+    font-size: 14px;
+  }
+  *:focus-visible {
+    outline: 2px solid var(--c-accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  ::placeholder {
+    color: var(--c-ink3);
+  }
+}
+
+/* Scrollbar ramping senada token */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-line) transparent;
+}
+
+/* ===== Konten WYSIWYG (TipTap) & pratinjau ===== */
+.tiptap {
+  outline: none;
+  min-height: 320px;
+}
+.prose-x {
+  line-height: 1.7;
+  color: var(--c-ink);
+}
+.prose-x h2 { font-size: 1.35rem; font-weight: 700; margin: 1.2em 0 0.5em; }
+.prose-x h3 { font-size: 1.15rem; font-weight: 600; margin: 1em 0 0.4em; }
+.prose-x p { margin: 0.6em 0; }
+.prose-x ul { list-style: disc; padding-left: 1.4em; margin: 0.6em 0; }
+.prose-x ol { list-style: decimal; padding-left: 1.4em; margin: 0.6em 0; }
+.prose-x blockquote {
+  border-left: 3px solid var(--c-accent);
+  padding-left: 0.9em;
+  color: var(--c-ink2);
+  margin: 0.8em 0;
+}
+.prose-x code {
+  background: var(--c-surface2);
+  border: 1px solid var(--c-line);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+  font-size: 0.86em;
+}
+.prose-x pre {
+  background: var(--c-side);
+  color: var(--c-side-ink);
+  border-radius: 8px;
+  padding: 0.9em 1em;
+  overflow-x: auto;
+  margin: 0.8em 0;
+}
+.prose-x pre code { background: transparent; border: 0; padding: 0; }
+.prose-x hr { border: 0; border-top: 1px solid var(--c-line); margin: 1.2em 0; }
+.prose-x a { color: var(--c-accent); text-decoration: underline; }
+
+/* Animasi ringan untuk modal/toast */
+@keyframes xp-pop {
+  from { opacity: 0; transform: translateY(6px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.xp-pop { animation: xp-pop 140ms ease-out; }
